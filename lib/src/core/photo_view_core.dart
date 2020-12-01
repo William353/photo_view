@@ -137,7 +137,12 @@ class PhotoViewCoreState extends State<PhotoViewCore>
   }
 
   void onScaleUpdate(ScaleUpdateDetails details) {
+    final double minScale = scaleBoundaries.minScale;
+    final double maxScale = scaleBoundaries.maxScale;
     final double newScale = _scaleBefore * details.scale;
+    if (newScale < minScale || newScale > maxScale) {//不允许大于最大比例，小于最小比例
+      return;
+    }
     final Offset delta = details.focalPoint - _normalizedPosition;
 
     updateScaleStateFromNewScale(newScale);
