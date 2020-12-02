@@ -188,16 +188,19 @@ class PhotoViewCoreState extends State<PhotoViewCore>
       );
       return;
     }
-    // get magnitude from gesture velocity
-    final double magnitude = details.velocity.pixelsPerSecond.distance;
+    //一倍图、二倍图的时候支持惯性
+    if (controller?.scale == minScale || controller?.scale == maxScale) {
+      // get magnitude from gesture velocity
+      final double magnitude = details.velocity.pixelsPerSecond.distance;
 
-    // animate velocity only if there is no scale change and a significant magnitude
-    if (_scaleBefore / _scale == 1.0 && magnitude >= 400.0) {
-      final Offset direction = details.velocity.pixelsPerSecond / magnitude;
-      animatePosition(
-        _position,
-        clampPosition(position: _position + direction * 100.0),
-      );
+      // animate velocity only if there is no scale change and a significant magnitude
+      if (_scaleBefore / _scale == 1.0 && magnitude >= 400.0) {
+        final Offset direction = details.velocity.pixelsPerSecond / magnitude;
+        animatePosition(
+          _position,
+          clampPosition(position: _position + direction * 100.0),
+        );
+      }
     }
   }
 
